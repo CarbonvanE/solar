@@ -1,0 +1,32 @@
+.vertical-center {
+    min-height: 100vh;
+
+    #icon {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .active {
+        font-weight: bold;
+    }
+
+    #register-form {
+        display: none;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        height: 42px;
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 8px;
+        margin: 2px 0;
+    }
+}

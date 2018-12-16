@@ -3,3 +3,4 @@ solar/__pycache__
 app/__pycache__
 app/migrations/__pycache__
 solar/secrets.json
+app/static/app/stylesheets/public

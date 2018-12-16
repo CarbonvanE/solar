@@ -8,11 +8,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="{% static 'app/stylesheets/public/base.css' %}">
+    {% block CSSblock %}{% endblock %}
 
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
     {% block body %}
     {% endblock %}
+    {% block JSblock %}{% endblock %}
 </body>
 </html>
