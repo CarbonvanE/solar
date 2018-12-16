@@ -11,6 +11,8 @@ from app.models import CustomUser, SuperSecretCode
 
 def index_view(request):
     """ Main page of the app """
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
     return render(request, 'app/index.html')
 
 
