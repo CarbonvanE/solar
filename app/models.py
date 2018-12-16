@@ -1,8 +1,11 @@
+"""" All models necessary to use the databse """
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class CustomUser(AbstractUser):
+    """" User model """
     USERNAME_FIELD = 'email'
     email = models.EmailField(('email address'), unique=True)
     REQUIRED_FIELDS = [] # removes email from REQUIRED_FIELDS
@@ -12,6 +15,7 @@ class CustomUser(AbstractUser):
 
 
 class SuperSecretCode(models.Model):
+    """ Codes necessary to create a new account """
     code = models.CharField(max_length=19, unique=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='super_secret_code', blank=True, null=True)
     activated = models.BooleanField(default=False)
@@ -20,5 +24,4 @@ class SuperSecretCode(models.Model):
     def __str__(self):
         if self.activated:
             return f'{self.code} (activated on {self.activation_date.strftime("%d %B %Y")} by {self.user})'
-        else:
-            return f'{self.code} (not yet activated)'
+        return f'{self.code} (not yet activated)'
