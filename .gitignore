@@ -1,3 +1,4 @@
+.DS_Store
 solar/__pycache__
 app/__pycache__
 app/migrations/__pycache__
