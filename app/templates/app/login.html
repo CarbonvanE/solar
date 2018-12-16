@@ -34,12 +34,12 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col text-center">
-                                    <a href="#" id="login-link" class="active">
+                                    <a href="#" id="login-link" {% if register is not True %} class="active" {% endif %}>
                                         Login
                                     </a>
                                 </div>
                                 <div class="col text-center">
-                                    <a href="#" id="register-link">
+                                    <a href="#" id="register-link" {% if register is True %} class="active" {% endif %}>
                                         Register
                                     </a>
                                 </div>
@@ -48,7 +48,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12 ">
-                                    <form id="login-form" method="post" {% if register is not "True" %} style="display:none" {% endif %}>
+                                    <form id="login-form" method="post" {% if register is True %} style="display:none" {% endif %}>
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <input type="email" name="email" placeholder="e-mailadres">
@@ -58,7 +58,7 @@
                                         </div>
                                         <input class="btn btn-primary" type="submit" value="Log in">
                                     </form>
-                                    <form id="register-form" method="post" {% if register is "True" %} style="display:none" {% endif %}>
+                                    <form id="register-form" method="post" {% if register is not True %} style="display:none" {% endif %}>
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <input type="text" name="super-secret-code" placeholder="Super secret code">
