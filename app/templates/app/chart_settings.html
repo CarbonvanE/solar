@@ -15,6 +15,15 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col col-lg-6">
+                {% if message %}
+                    <div class="alert alert-success text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert" style="visibility:hidden;">
+                        None.
+                    </div>
+                {% endif %}
                 <div class="row">
                     <h3>Chart settings</h3>
                     <table class="table">
