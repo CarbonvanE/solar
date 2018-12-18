@@ -66,7 +66,7 @@ def password_reset_view(request):
 
 
 @login_required
-def settings_view(request):
+def user_settings_view(request):
     """ Returns the settings page """
     first_name = request.user.first_name
     last_name = request.user.last_name
@@ -77,4 +77,8 @@ def settings_view(request):
         'last_name': last_name,
         'email': email,
     }
-    return render(request, 'app/settings.html', context)
+    return render(request, 'app/user_settings.html', context)
+
+@login_required
+def chart_settings_view(request):
+    return render(request, 'app/chart_settings.html', {'tab': 'settings'})
