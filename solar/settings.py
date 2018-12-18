@@ -126,4 +126,6 @@ STATIC_URL = '/static/'
 
 
 # Custom user model
-AUTH_USER_MODEL = 'app.CustomUser' # new
+AUTH_USER_MODEL = 'app.CustomUser'
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'

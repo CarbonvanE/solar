@@ -4,15 +4,14 @@ from uuid import uuid4
 
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from app.models import CustomUser, SuperSecretCode
 
-
+@login_required
 def index_view(request):
     """ Main page of the app """
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("login"))
     return render(request, 'app/index.html')
 
 
