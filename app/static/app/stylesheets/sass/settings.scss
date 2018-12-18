@@ -2,13 +2,15 @@
     h3 {
         width: 100%;
         text-align: center;
-        margin-top: 30px;
+        margin-top: 50px;
+        margin-bottom: 20px;
     }
 
     table {
         table-layout: fixed;
         width: 100%;
         tr {
+            line-height: 38px;
             th, td {
                 border-top: None !important;
                 vertical-align: middle !important;
