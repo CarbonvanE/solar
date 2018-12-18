@@ -52,3 +52,9 @@ def login_view(request):
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     return render(request, 'app/login.html')
+
+
+def logout_view(request):
+    """ Log the user out """
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
