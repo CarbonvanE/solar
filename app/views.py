@@ -68,16 +68,32 @@ def password_reset_view(request):
 @login_required
 def user_settings_view(request):
     """ Returns the settings page """
-    first_name = request.user.first_name
-    last_name = request.user.last_name
-    email = request.user.email
-    context = {
-        'tab': 'settings',
-        'first_name': first_name,
-        'last_name': last_name,
-        'email': email,
-    }
-    return render(request, 'app/user_settings.html', context)
+    if request.method == 'GET':
+        first_name = request.user.first_name
+        last_name = request.user.last_name
+        email = request.user.email
+        context = {
+            'tab': 'settings',
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+        }
+        return render(request, 'app/user_settings.html', context)
+    elif request.method == 'POST':
+        user = CustomUser.objects.filter(email=request.user).first()
+        code = request.POST['code']
+        content = request.POST['content']
+        if code == 'first_name':
+            user.first_name = content
+        elif code == 'last_name':
+            user.last_name = content
+        elif code == 'email':
+            user.email = content
+        elif code == 'password':
+            user.set_password(content)
+            login(request, user)
+        user.save()
+        return HttpResponseRedirect(reverse('user_settings'))
 
 @login_required
 def chart_settings_view(request):
