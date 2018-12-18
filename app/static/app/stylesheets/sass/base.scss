@@ -8,9 +8,18 @@
             padding-left: 10px;
             padding-right: 10px;
         }
-        li:last-child {
-            padding-left: 35px;
+
+        @media only screen and (min-width: 992px) {
+            li:last-child {
+                padding-left: 35px;
+            }
         }
+        @media only screen and (max-width: 992px) {
+            li:last-child {
+                padding-top: 10px;
+            }
+        }
+
     }
     .dropdown {
         .log-out-button {
