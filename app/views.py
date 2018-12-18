@@ -57,3 +57,8 @@ def logout_view(request):
     """ Log the user out """
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+def password_reset_view(request):
+    """ TODO: Crete the password reset logic """
+    return render(request, 'app/login.html', {'message': 'Hahaha, too bad...'})
