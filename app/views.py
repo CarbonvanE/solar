@@ -53,6 +53,7 @@ def login_view(request):
     return render(request, 'app/login.html')
 
 
+@login_required
 def logout_view(request):
     """ Log the user out """
     logout(request)
@@ -63,6 +64,9 @@ def password_reset_view(request):
     """ TODO: Create the password reset logic """
     return render(request, 'app/login.html', {'message': 'Hahaha, too bad...'})
 
+
+@login_required
 def settings_view(request):
     """ Returns the settings page """
+
     return render(request, 'app/settings.html', {'tab': 'settings'})
