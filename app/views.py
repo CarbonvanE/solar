@@ -60,5 +60,9 @@ def logout_view(request):
 
 
 def password_reset_view(request):
-    """ TODO: Crete the password reset logic """
+    """ TODO: Create the password reset logic """
     return render(request, 'app/login.html', {'message': 'Hahaha, too bad...'})
+
+def settings_view(request):
+    """ Returns the settings page """
+    return render(request, 'app/settings.html', {'tab': 'settings'})

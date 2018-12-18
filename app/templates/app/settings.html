@@ -1,0 +1,65 @@
+{% extends "app/base/base_logged_in.html" %}
+
+{% block CSSblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/stylesheets/public/settings.css' %}">
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-5">
+                <div class="row">
+                    <h3>User settings</h3>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th scope="row">First name</th>
+                                <td>Ruben</td>
+                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">E-mail address</th>
+                                <td>test@example.com</td>
+                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Password</th>
+                                <td>**********</td>
+                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                            </tr>
+                            <tr class="delete-account">
+                                <th scope="row">Delete account</th>
+                                <td></td>
+                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <h3>Chart settings</h3>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Setting 1</th>
+                                <td>Blue</td>
+                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Setting 2</th>
+                                <td>Full width</td>
+                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Setting 3</th>
+                                <td>Month</td>
+                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
