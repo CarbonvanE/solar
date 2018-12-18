@@ -15,6 +15,15 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col col-lg-6">
+                {% if message %}
+                    <div class="alert alert-success text-center" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert" style="visibility:hidden;">
+                        None.
+                    </div>
+                {% endif %}
                 <div class="row">
                     <h3>User settings</h3>
                     <table class="table">
@@ -25,22 +34,22 @@
                             <tr>
                                 <th scope="row">First name</th>
                                 <td>{{ first_name }}</td>
-                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-code="first_name" data-key="first name" data-value="{{ first_name }}">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="first name" data-value="{{ first_name }}">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">Last name</th>
                                 <td>{{ last_name }}</td>
-                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-code="last_name" data-key="last name" data-value="{{ last_name }}">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="last name" data-value="{{ last_name }}">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">E-mail address</th>
                                 <td>{{ email }}</td>
-                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-code="email" data-key="e-mail" data-value="{{ email }}">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="e-mail" data-value="{{ email }}">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">Password</th>
                                 <td>**********</td>
-                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-code="password" data-key="password" data-value="**********">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="password" data-value="**********">Edit</button></td>
                             </tr>
                             <tr class="delete-account">
                                 <th scope="row">Delete account</th>
