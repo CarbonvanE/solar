@@ -22,8 +22,12 @@
 
     }
     .dropdown {
-        .fas {
-            width: 22px;
+        .dropdown-item {
+            margin-top: 3px;
+            margin-bottom: 3px;
+            .fas {
+                width: 22px;
+            }
         }
 
         .log-out-button {
