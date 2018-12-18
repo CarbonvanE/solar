@@ -5,7 +5,13 @@
     <link rel="stylesheet" href="{% static 'app/stylesheets/public/settings.css' %}">
 {% endblock %}
 
+{% block JSblock %}
+    <script type="text/javascript" src="{% static 'app/logic/settings.js' %}"></script>
+{% endblock %}
+
 {% block main %}
+    {% include 'app/includes/settings_modal.html' %}
+
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col col-lg-6">
@@ -16,17 +22,17 @@
                             <tr>
                                 <th scope="row">Setting 1</th>
                                 <td>Blue</td>
-                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="setting 1" data-value="Blue">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">Setting 2</th>
                                 <td>Full width</td>
-                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="setting 2" data-value="Full width">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">Setting 3</th>
                                 <td>Month</td>
-                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="setting 3" data-value="Month">Edit</button></td>
                             </tr>
                         </tbody>
                     </table>

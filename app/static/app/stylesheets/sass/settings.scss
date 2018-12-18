@@ -35,3 +35,14 @@
         font-size: 0.9em;
     }
 }
+
+.modal {
+    .modal-footer {
+        border: none !important;
+    }
+    input, input:focus {
+        // outline: none !important;
+        border: solid 1px gainsboro;
+        box-shadow: none;
+    }
+}

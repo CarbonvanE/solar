@@ -5,7 +5,13 @@
     <link rel="stylesheet" href="{% static 'app/stylesheets/public/settings.css' %}">
 {% endblock %}
 
+{% block JSblock %}
+    <script type="text/javascript" src="{% static 'app/logic/settings.js' %}"></script>
+{% endblock %}
+
 {% block main %}
+    {% include 'app/includes/settings_modal.html' %}
+
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col col-lg-6">
@@ -19,22 +25,22 @@
                             <tr>
                                 <th scope="row">First name</th>
                                 <td>{{ first_name }}</td>
-                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="first name" data-value="{{ first_name }}">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">Last name</th>
                                 <td>{{ last_name }}</td>
-                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="last name" data-value="{{ last_names }}">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">E-mail address</th>
                                 <td>{{ email }}</td>
-                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="e-mail" data-value="{{ email }}">Edit</button></td>
                             </tr>
                             <tr>
                                 <th scope="row">Password</th>
                                 <td>**********</td>
-                                <td><button type="button" class="btn btn-light">Edit</button></td>
+                                <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#change-settings-modal" data-key="password" data-value="**********">Edit</button></td>
                             </tr>
                             <tr class="delete-account">
                                 <th scope="row">Delete account</th>
