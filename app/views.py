@@ -10,12 +10,16 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from app.models import CustomUser, SuperSecretCode
 
+from functions import what_is_the_weather
+
 
 # Get the API key and site id
 with open('solar/secrets.json', 'r') as f:
-    API_KEY = json.load(f)['SOLAREDGE']['API_KEY']
-with open('solar/secrets.json', 'r') as f:
-    SITE_ID = json.load(f)['SOLAREDGE']['SITE_ID']
+    DATA = json.load(f)
+    API_KEY = DATA['SOLAREDGE']['API_KEY']
+    SITE_ID = DATA['SOLAREDGE']['SITE_ID']
+    LAT = DATA['LOCATION']['LAT']
+    LEN = DATA['LOCATION']['LEN']
 
 
 @login_required
@@ -25,6 +29,7 @@ def index_view(request):
     response = requests.get(url)
     data = json.loads(response.content)['overview']
     context = {
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
         'last_updated': data['lastUpdateTime'],
         'energy_total': int(data['lifeTimeData']['energy'] / 1000),
         'energy_year': int(data['lastYearData']['energy'] / 1000),
@@ -71,7 +76,10 @@ def login_view(request):
                 return render(request, 'app/login.html', {'message': 'Invalid credentials.'})
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
-    return render(request, 'app/login.html')
+    context = {
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN)
+    }
+    return render(request, 'app/login.html', context)
 
 
 @login_required
@@ -83,7 +91,11 @@ def logout_view(request):
 
 def password_reset_view(request):
     """ TODO: Create the password reset logic """
-    return render(request, 'app/login.html', {'message': 'Hahaha, too bad...'})
+    context = {
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
+        'message': 'Hahaha, too bad...'
+    }
+    return render(request, 'app/login.html', context)
 
 
 @login_required
@@ -112,6 +124,7 @@ def user_settings_view(request):
         message = code.capitalize() + ' has been succesfully updated!'
         user.save()
     context = {
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
         'message': message,
         'tab': 'settings',
         'first_name': first_name,
@@ -123,4 +136,8 @@ def user_settings_view(request):
 
 @login_required
 def chart_settings_view(request):
-    return render(request, 'app/chart_settings.html', {'tab': 'settings'})
+    context = {
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
+        'tab': 'settings'
+    }
+    return render(request, 'app/chart_settings.html', context)
