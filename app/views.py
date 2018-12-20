@@ -1,6 +1,7 @@
 """ All view logic for the app """
 
 from uuid import uuid4
+import requests, json
 
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
@@ -9,10 +10,30 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from app.models import CustomUser, SuperSecretCode
 
+
+# Get the API key and site id
+with open('solar/secrets.json', 'r') as f:
+    API_KEY = json.load(f)['SOLAREDGE']['API_KEY']
+with open('solar/secrets.json', 'r') as f:
+    SITE_ID = json.load(f)['SOLAREDGE']['SITE_ID']
+
+
 @login_required
 def index_view(request):
     """ Main page of the app """
-    return render(request, 'app/index.html')
+    url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/overview?api_key={API_KEY}'
+    response = requests.get(url)
+    data = json.loads(response.content)['overview']
+    context = {
+        'last_updated': data['lastUpdateTime'],
+        'energy_total': int(data['lifeTimeData']['energy'] / 1000),
+        'energy_year': int(data['lastYearData']['energy'] / 1000),
+        'energy_month': int(data['lastMonthData']['energy'] / 1000),
+        'energy_day': round(data['lastDayData']['energy'] / 1000, 1),
+        'current_power': int(data['currentPower']['power'])
+    }
+    print(data)
+    return render(request, 'app/index.html', context)
 
 
 def login_view(request):
