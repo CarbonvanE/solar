@@ -3,9 +3,9 @@ import json
 import requests
 
 
-def is_it_night(lat, len):
+def is_it_night(lat, lng):
     """ Checks if it is currently night """
-    url = f'http://api.sunrise-sunset.org/json?lat={lat}&lng={len}&formatted=0'
+    url = f'http://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0'
     response = requests.get(url)
     data = json.loads(response.content)['results']
 
@@ -26,9 +26,9 @@ def get_current_power(site_id, api_key):
     return current_power
 
 
-def what_is_the_weather(site_id, api_key, lat, len):
+def what_is_the_weather(site_id, api_key, lat, lng):
     """ checks what the weather is and returns a FontAwesome class """
-    if is_it_night(lat, len):
+    if is_it_night(lat, lng):
         return 'fa-moon'
     current_power = get_current_power(site_id, api_key)
     if current_power > 1000:

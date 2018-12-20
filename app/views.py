@@ -19,7 +19,7 @@ with open('solar/secrets.json', 'r') as f:
     API_KEY = DATA['SOLAREDGE']['API_KEY']
     SITE_ID = DATA['SOLAREDGE']['SITE_ID']
     LAT = DATA['LOCATION']['LAT']
-    LEN = DATA['LOCATION']['LEN']
+    LNG = DATA['LOCATION']['LNG']
 
 
 @login_required
@@ -29,7 +29,7 @@ def index_view(request):
     response = requests.get(url)
     data = json.loads(response.content)['overview']
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'last_updated': data['lastUpdateTime'],
         'energy_total': int(data['lifeTimeData']['energy'] / 1000),
         'energy_year': int(data['lastYearData']['energy'] / 1000),
@@ -77,7 +77,7 @@ def login_view(request):
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN)
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG)
     }
     return render(request, 'app/login.html', context)
 
@@ -92,7 +92,7 @@ def logout_view(request):
 def password_reset_view(request):
     """ TODO: Create the password reset logic """
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'message': 'Hahaha, too bad...'
     }
     return render(request, 'app/login.html', context)
@@ -124,7 +124,7 @@ def user_settings_view(request):
         message = code.capitalize() + ' has been succesfully updated!'
         user.save()
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'message': message,
         'tab': 'settings',
         'first_name': first_name,
@@ -137,7 +137,7 @@ def user_settings_view(request):
 @login_required
 def chart_settings_view(request):
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LEN),
+        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'tab': 'settings'
     }
     return render(request, 'app/chart_settings.html', context)
