@@ -32,15 +32,15 @@
             </div> -->
             <div class="row justify-content-md-center">
                 <div class="col-md-5">
-                    {% if message %}
-                        <div class="alert alert-danger text-center" role="alert">
-                            {{ message }}
-                        </div>
-                    {% else %}
-                        <div class="alert" style="visibility:hidden;">
-                            None.
-                        </div>
-                    {% endif %}
+                    <div class="top-login">
+                        {% if message %}
+                            <div class="alert alert-danger text-center" role="alert">
+                                {{ message }}
+                            </div>
+                        {% else %}
+                            <h1><i class="fas fa-cloud-sun fa-2x"></i></h1>
+                        {% endif %}
+                    </div>
                     <div class="card toggle-links">
                         <div class="card-header">
                             <div class="row">
