@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from app.models import CustomUser, SuperSecretCode, EnergyPerDay
 
-from functions import what_is_the_weather
+from functions import get_start_and_end_date, what_is_the_weather
 
 
 # Get the API key and site id
@@ -148,7 +148,8 @@ def json_icon(request):
 @login_required
 def json_energy_day_view(request):
     """ Returns a json object with all the energy data """
-    time = 'startDate=2018-09-03&endDate=2018-12-22'
+    start_date, end_date = get_start_and_end_date(SITE_ID, API_KEY)
+    time = f'startDate={start_date}&endDate={end_date}'
     url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/energy?timeUnit=DAY&{time}&api_key={API_KEY}'
     response = requests.get(url)
     if response.status_code == 200:
@@ -168,5 +169,6 @@ def json_energy_day_view(request):
             except EnergyPerDay.DoesNotExist:
                 new_row = EnergyPerDay.objects.create(date=date, energy=energy)
                 new_row.save()
-        return JsonResponse({'energy': energy_list, 'success': True})
+        content = {'energy': energy_list, 'success': True}
+        return JsonResponse(content)
     return JsonResponse({'energy': [], 'success': False})

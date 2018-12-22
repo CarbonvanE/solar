@@ -5,6 +5,15 @@ import requests
 
 from django.core.cache import cache
 
+def get_start_and_end_date(site_id, api_key):
+    """ Returns the start and the end date of the data in SolarEdge's database """
+    url = f'https://monitoringapi.solaredge.com/site/{site_id}/dataPeriod?api_key={api_key}'
+    response = requests.get(url)
+    data = json.loads(response.content)
+    start_date = data['dataPeriod']['startDate']
+    end_date = data['dataPeriod']['endDate']
+    return(start_date, end_date)
+
 
 def is_it_night(lat, lng):
     """ Checks if it is currently night """
