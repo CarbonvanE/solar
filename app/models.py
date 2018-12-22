@@ -30,7 +30,7 @@ class SuperSecretCode(models.Model):
 
 class EnergyPerDay(models.Model):
     """ Energy generation per day """
-    date = models.DateField()
+    date = models.DateField(unique=True)
     energy = models.PositiveIntegerField()
     date_added = models.DateField(auto_now=True)
 
