@@ -31,7 +31,6 @@ def index_view(request):
     response = requests.get(url)
     data = json.loads(response.content)['overview']
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'last_updated': data['lastUpdateTime'],
         'energy_total': int(data['lifeTimeData']['energy'] / 1000),
         'energy_year': int(data['lastYearData']['energy'] / 1000),
@@ -78,10 +77,7 @@ def login_view(request):
                 return render(request, 'app/login.html', {'message': 'Invalid credentials.'})
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
-    context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG)
-    }
-    return render(request, 'app/login.html', context)
+    return render(request, 'app/login.html')
 
 
 @login_required
@@ -94,7 +90,6 @@ def logout_view(request):
 def password_reset_view(request):
     """ TODO: Create the password reset logic """
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'message': 'Hahaha, too bad...'
     }
     return render(request, 'app/login.html', context)
@@ -126,7 +121,6 @@ def user_settings_view(request):
         message = code.capitalize() + ' has been succesfully updated!'
         user.save()
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'message': message,
         'tab': 'settings',
         'first_name': first_name,
@@ -140,11 +134,15 @@ def user_settings_view(request):
 def chart_settings_view(request):
     """ Returns the chart settings page """
     context = {
-        'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'tab': 'settings'
     }
     return render(request, 'app/chart_settings.html', context)
 
+
+def json_icon(request):
+    """ Returns the relevant weather icon """
+    icon = what_is_the_weather(SITE_ID, API_KEY, LAT, LNG)
+    return JsonResponse({'icon': icon})
 
 
 @login_required
@@ -171,4 +169,4 @@ def json_energy_day_view(request):
                 new_row = EnergyPerDay.objects.create(date=date, energy=energy)
                 new_row.save()
         return JsonResponse({'energy': energy_list, 'success': True})
-    print({'energy': [], 'success': False})
+    return JsonResponse({'energy': [], 'success': False})
