@@ -1,14 +1,16 @@
 """ All view logic for the app """
 
 from uuid import uuid4
-import requests, json
+from datetime import datetime, timedelta
+import json
+import requests
 
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from app.models import CustomUser, SuperSecretCode
+from app.models import CustomUser, SuperSecretCode, EnergyPerDay
 
 from functions import what_is_the_weather
 
@@ -100,7 +102,7 @@ def password_reset_view(request):
 
 @login_required
 def user_settings_view(request):
-    """ Returns the settings page """
+    """ Returns the user settings page """
     first_name = request.user.first_name
     last_name = request.user.last_name
     email = request.user.email
@@ -136,8 +138,37 @@ def user_settings_view(request):
 
 @login_required
 def chart_settings_view(request):
+    """ Returns the chart settings page """
     context = {
         'weather': what_is_the_weather(SITE_ID, API_KEY, LAT, LNG),
         'tab': 'settings'
     }
     return render(request, 'app/chart_settings.html', context)
+
+
+
+@login_required
+def json_energy_day_view(request):
+    """ Returns a json object with all the energy data """
+    time = 'startDate=2018-09-03&endDate=2018-12-22'
+    url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/energy?timeUnit=DAY&{time}&api_key={API_KEY}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = json.loads(response.content)['energy']['values']
+        energy_list = []
+        for datum in data:
+            date = datetime.strptime(datum['date'], '%Y-%m-%d %H:%M:%S').date()
+            if datum['value'] is None:
+                energy = 0
+            else:
+                energy = int(datum['value'])
+            energy_list.append({'date': date, 'energy': energy})
+            try:
+                date_entry = EnergyPerDay.objects.get(date=date)
+                if date + timedelta(days=5) < date.today():
+                    date_entry.energy = energy
+            except EnergyPerDay.DoesNotExist:
+                new_row = EnergyPerDay.objects.create(date=date, energy=energy)
+                new_row.save()
+        return JsonResponse({'energy': energy_list, 'success': True})
+    print({'energy': [], 'success': False})
