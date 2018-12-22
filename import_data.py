@@ -6,7 +6,8 @@ with open('solar/secrets.json', 'r') as f:
     API_KEY = json.load(f)['SOLAREDGE']['API_KEY']
 
 with open('solar/secrets.json', 'r') as f:
-    SITE_ID = json.load(f)['SOLAREDGE']['SITE_ID']
+    DATA = json.load(f)
+    SITE_ID = DATA['SOLAREDGE']['SITE_ID']
 
 
 def get_average(values, index_range):
