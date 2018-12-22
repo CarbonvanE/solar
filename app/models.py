@@ -23,5 +23,16 @@ class SuperSecretCode(models.Model):
 
     def __str__(self):
         if self.activated:
-            return f'{self.code} (activated on {self.activation_date.strftime("%d %B %Y")} by {self.user})'
+            activation_date = self.activation_date.strftime("%d %B %Y")
+            return f'{self.code} (activated on {activation_date} by {self.user})'
         return f'{self.code} (not yet activated)'
+
+
+class EnergyPerDay(models.Model):
+    """ Energy generation per day """
+    date = models.DateField()
+    energy = models.PositiveIntegerField()
+    date_added = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.date} - {self.energy}kWh'
