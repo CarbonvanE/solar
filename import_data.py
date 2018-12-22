@@ -3,10 +3,8 @@ import json
 import requests
 
 with open('solar/secrets.json', 'r') as f:
-    API_KEY = json.load(f)['SOLAREDGE']['API_KEY']
-
-with open('solar/secrets.json', 'r') as f:
     DATA = json.load(f)
+    API_KEY = DATA['SOLAREDGE']['API_KEY']
     SITE_ID = DATA['SOLAREDGE']['SITE_ID']
 
 
