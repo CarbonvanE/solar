@@ -31,9 +31,10 @@ def get_current_power(site_id, api_key):
 
 def what_is_the_weather(site_id, api_key, lat, lng):
     """ checks what the weather is and returns a FontAwesome class """
-    weather_symbol = cache.get('current_weather')
+    weather_symbol = cache.get('weather_symbol')
     if weather_symbol is not None:
         return weather_symbol
+
     is_night = is_it_night(lat, lng)
     current_power = get_current_power(site_id, api_key)
     if is_night:
