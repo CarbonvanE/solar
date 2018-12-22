@@ -6,6 +6,7 @@ import json
 import requests
 
 from django.shortcuts import render
+from django.core.cache import cache
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
@@ -148,6 +149,9 @@ def json_icon(request):
 @login_required
 def json_energy_day_view(request):
     """ Returns a json object with all the energy data """
+    content = cache.get('energy_day')
+    if content is not None:
+        return JsonResponse(content)
     start_date, end_date = get_start_and_end_date(SITE_ID, API_KEY)
     time = f'startDate={start_date}&endDate={end_date}'
     url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/energy?timeUnit=DAY&{time}&api_key={API_KEY}'
@@ -170,5 +174,6 @@ def json_energy_day_view(request):
                 new_row = EnergyPerDay.objects.create(date=date, energy=energy)
                 new_row.save()
         content = {'energy': energy_list, 'success': True}
+        cache.set('energy_day', content, 5 * 60)
         return JsonResponse(content)
     return JsonResponse({'energy': [], 'success': False})
