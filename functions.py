@@ -1,5 +1,7 @@
 """ All functions necessary to create and return views """
 from datetime import datetime
+from math import floor, ceil
+from statistics import mean
 import json
 import requests
 
@@ -13,6 +15,19 @@ def get_start_and_end_date(site_id, api_key):
     start_date = data['dataPeriod']['startDate']
     end_date = data['dataPeriod']['endDate']
     return(start_date, end_date)
+
+
+def get_averages(input_list, avg_range):
+    new_list = []
+    for index, item in enumerate(input_list):
+        start_index = index - floor(avg_range / 2) if index - floor(avg_range / 2) >= 0 else 0
+        end_index = index + ceil(avg_range / 2) if  index + ceil(avg_range / 2) <= len(input_list) else len(input_list)
+        all_values_in_range = []
+        for i in input_list[start_index: end_index]:
+            all_values_in_range.append(i[1])
+        average_value = round(mean(all_values_in_range), 1)
+        new_list.append([item[0], average_value])
+    return new_list
 
 
 def is_it_night(lat, lng):

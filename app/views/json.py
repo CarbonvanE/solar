@@ -8,7 +8,7 @@ from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from functions import get_start_and_end_date, what_is_the_weather
+from functions import get_start_and_end_date, what_is_the_weather, get_averages
 
 
 # Get the API key and site id
@@ -42,9 +42,24 @@ def json_energy_day_view(request):
         for datum in data:
             date = datetime.strptime(datum['date'], '%Y-%m-%d %H:%M:%S').date()
             timestamp = int(date.strftime('%s')) * 1000
-            energy = datum['value'] / 1000 if datum['value'] is not None else 0
+            energy = round(datum['value'] / 1000, 1) if datum['value'] is not None else 0.0
             energy_list.append([timestamp, energy])
-        content = {'energy': energy_list, 'success': True}
+        content = {
+            'energy': {
+                'raw': {
+                    'name': 'Daily generation',
+                    'data': energy_list
+                },
+                'small_avg': {
+                    'name': 'Weekly average',
+                    'data': get_averages(energy_list, 7)
+                },
+                'large_avg': {
+                    'name': 'Monthly average',
+                    'data': get_averages(energy_list, 30)
+                }
+            },
+            'success': True}
         cache.set('energy_day', content, 5 * 60)
         return JsonResponse(content)
     return JsonResponse({'energy': [], 'success': False})

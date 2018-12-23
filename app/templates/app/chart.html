@@ -6,9 +6,14 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         $.getJSON('/json/energy', function(data) {
+            const rawData = data['energy']['raw'];
+            const smallAvg = data['energy']['small_avg'];
+            const largeAvg = data['energy']['large_avg'];
+
             const myChart = Highcharts.chart('container', {
                 chart: {
                     type: 'spline',
+                    zoomType: 'x',
                     scrollablePlotArea: {
                         minWidth: 600,
                         scrollPositionX: 1
@@ -29,24 +34,35 @@
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' kWh'
+                    valueSuffix: ' kWh',
+                    shared: true
                 },
                 legend: {
                     enabled: false
                 },
                 plotOptions: {
                     spline: {
-                        lineWidth: 3,
-                        states: {
-                            hover: {
-                                lineWidth: 4
-                            }
-                        }
+                        lineWidth: 2,
+                        marker: {
+                            enabled: false
+                        },
+                        // enableMouseTracking: false
                     }
                 },
                 series: [{
-                    name: 'Day',
-                    data: data['energy']
+                    name: rawData['name'],
+                    type: 'column',
+                    data: rawData['data'],
+                    color: 'lightgrey',
+                    lineWidth: 2,
+                }, {
+                    name: smallAvg['name'],
+                    data: smallAvg['data'],
+                    color: 'darkgrey'
+                }, {
+                    name: largeAvg['name'],
+                    data: largeAvg['data'],
+                    color: 'grey'
                 }
             ]
             });
