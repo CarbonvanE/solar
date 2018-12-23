@@ -1,7 +1,7 @@
 """ All view logic for the app """
 
 from uuid import uuid4
-from datetime import datetime, timedelta
+from datetime import datetime
 import json
 import requests
 
@@ -95,6 +95,36 @@ def password_reset_view(request):
     }
     return render(request, 'app/login.html', context)
 
+
+
+@login_required
+def chart_day_view(request):
+    context = {
+        'tab': 'chart_day'
+    }
+    return render(request, 'app/chart.html', context)
+
+
+@login_required
+def chart_week_view(request):
+    context = {
+        'tab': 'chart_week'
+    }
+    return render(request, 'app/chart.html', context)
+
+@login_required
+def chart_month_view(request):
+    context = {
+        'tab': 'chart_month'
+    }
+    return render(request, 'app/chart.html', context)
+
+@login_required
+def chart_year_view(request):
+    context = {
+        'tab': 'chart_year'
+    }
+    return render(request, 'app/chart.html', context)
 
 @login_required
 def user_settings_view(request):

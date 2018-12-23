@@ -12,17 +12,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Day</a>
+                <li class="nav-item {% if tab == "chart_day" %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'chart_day' %}">Day</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Week</a>
+                <li class="nav-item {% if tab == "chart_week" %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'chart_week' %}">Week</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Month</a>
+                <li class="nav-item {% if tab == "chart_month" %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'chart_month' %}">Month</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Year</a>
+                <li class="nav-item {% if tab == "chart_year" %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'chart_year' %}">Year</a>
                 </li>
                 <li class="nav-item dropdown {% if tab == "settings" %}active{% endif %}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
