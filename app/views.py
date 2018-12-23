@@ -161,10 +161,7 @@ def json_energy_day_view(request):
         energy_list = []
         for datum in data:
             date = datetime.strptime(datum['date'], '%Y-%m-%d %H:%M:%S').date()
-            if datum['value'] is None:
-                energy = 0
-            else:
-                energy = int(datum['value'])
+            energy = int(datum['value']) if datum['value'] is not None else 0
             energy_list.append({'date': date, 'energy': energy})
             try:
                 date_entry = EnergyPerDay.objects.get(date=date)
