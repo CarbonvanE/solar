@@ -11,7 +11,6 @@ urlpatterns = [
 
     path('chart/day', views.chart_day_view, name='chart_day'),
     path('chart/week', views.chart_week_view, name='chart_week'),
-    path('chart/month', views.chart_month_view, name='chart_month'),
     path('chart/year', views.chart_year_view, name='chart_year'),
 
     path('settings/user', views.user_settings_view, name='user_settings'),

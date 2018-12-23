@@ -21,13 +21,6 @@ def chart_week_view(request):
     }
     return render(request, 'app/chart.html', context)
 
-@login_required
-def chart_month_view(request):
-    """ Returns the chart of the last 30 days """
-    context = {
-        'tab': 'chart_month'
-    }
-    return render(request, 'app/chart.html', context)
 
 @login_required
 def chart_year_view(request):
