@@ -1,0 +1,56 @@
+{% extends "app/base/base_logged_in.html" %}
+
+{% block main %}
+    <div id="container" style="width:100%; height:70vh;"></div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $.getJSON('/json/energy', function(data) {
+            const myChart = Highcharts.chart('container', {
+                chart: {
+                    type: 'spline',
+                    scrollablePlotArea: {
+                        minWidth: 600,
+                        scrollPositionX: 1
+                    }
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    type: 'datetime',
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Energy generated (kWh per day)'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' kWh'
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    spline: {
+                        lineWidth: 3,
+                        states: {
+                            hover: {
+                                lineWidth: 4
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Day',
+                    data: data['energy']
+                }
+            ]
+            });
+        })
+    })
+    </script>
+{% endblock %}

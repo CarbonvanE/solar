@@ -191,8 +191,9 @@ def json_energy_day_view(request):
         energy_list = []
         for datum in data:
             date = datetime.strptime(datum['date'], '%Y-%m-%d %H:%M:%S').date()
-            energy = int(datum['value']) if datum['value'] is not None else 0
-            energy_list.append({date, energy})
+            timestamp = int(date.strftime('%s')) * 1000
+            energy = datum['value'] / 1000 if datum['value'] is not None else 0
+            energy_list.append([timestamp, energy])
         content = {'energy': energy_list, 'success': True}
         cache.set('energy_day', content, 5 * 60)
         return JsonResponse(content)
