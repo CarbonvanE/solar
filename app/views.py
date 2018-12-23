@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from app.models import CustomUser, SuperSecretCode, EnergyPerDay
+from app.models import CustomUser, SuperSecretCode
 
 from functions import get_start_and_end_date, what_is_the_weather
 
@@ -162,14 +162,7 @@ def json_energy_day_view(request):
         for datum in data:
             date = datetime.strptime(datum['date'], '%Y-%m-%d %H:%M:%S').date()
             energy = int(datum['value']) if datum['value'] is not None else 0
-            energy_list.append({'date': date, 'energy': energy})
-            try:
-                date_entry = EnergyPerDay.objects.get(date=date)
-                if date + timedelta(days=5) < date.today():
-                    date_entry.energy = energy
-            except EnergyPerDay.DoesNotExist:
-                new_row = EnergyPerDay.objects.create(date=date, energy=energy)
-                new_row.save()
+            energy_list.append({date, energy})
         content = {'energy': energy_list, 'success': True}
         cache.set('energy_day', content, 5 * 60)
         return JsonResponse(content)
