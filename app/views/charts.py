@@ -25,7 +25,15 @@ def chart_day_view(request):
 def chart_month_view(request):
     """ Returns the chart of the last 30 days """
     context = {
-        'tab': 'chart_month'
+        'tab': 'chart_month',
+
+        'chart_url': '/json/energy',
+        'chart_y_axis_title': 'Energy generated per day [kWh]',
+        'chart_tooltip_suffix': ' kWh',
+        'chart_raw_data_as_column': True,
+        'color_raw_data': 'lightgrey',
+        'color_small_avg': 'darkgrey',
+        'color_large_avg': 'grey'
     }
     return render(request, 'app/chart.html', context)
 
