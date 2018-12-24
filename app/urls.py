@@ -17,5 +17,6 @@ urlpatterns = [
     path('settings/charts', views.chart_settings_view, name='chart_settings'),
 
     path('json/icon', views.json_icon, name='json_icon'),
+    path('json/power', views.json_power_day, name='json_power_day'),
     path('json/energy', views.json_energy_year_view, name='json_energy_day')
 ]

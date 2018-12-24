@@ -1,6 +1,7 @@
 """ Handles all AJAX requests """
 
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz
 import json
 import requests
 
@@ -16,6 +17,7 @@ with open('solar/secrets.json', 'r') as f:
     DATA = json.load(f)
     API_KEY = DATA['SOLAREDGE']['API_KEY']
     SITE_ID = DATA['SOLAREDGE']['SITE_ID']
+    TIME_ZONE = DATA['LOCATION']['TIME_ZONE']
     LAT = DATA['LOCATION']['LAT']
     LNG = DATA['LOCATION']['LNG']
 
@@ -24,6 +26,47 @@ def json_icon(request):
     """ Returns the relevant weather icon """
     icon = what_is_the_weather(SITE_ID, API_KEY, LAT, LNG)
     return JsonResponse({'icon': icon})
+
+
+@login_required
+def json_power_day(request):
+    """ returns a json object with the power data of the last 24 hours """
+    content = cache.get('power_day')
+    if content is not None:
+        return JsonResponse(content)
+    start_time = (datetime.now(pytz.timezone(TIME_ZONE)) - timedelta(days=1)).strftime('%Y-%m-%d%%20%H:%M:%S')
+    end_time = datetime.now(pytz.timezone(TIME_ZONE)).strftime('%Y-%m-%d%%20%H:%M:%S')
+    time = f'startTime={start_time}&endTime={end_time}'
+    url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/power?{time}&api_key={API_KEY}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = json.loads(response.content)['power']['values']
+        power_list = []
+        for datum in data:
+            date = datetime.strptime(datum['date'], '%Y-%m-%d %H:%M:%S')
+            timestamp = int(date.strftime('%s')) * 1000
+            power = round(datum['value'], 1) if datum['value'] is not None else 0.0
+            power_list.append([timestamp, power])
+        content = {
+            'power': {
+                'raw': {
+                    'name': 'Power',
+                    'data': power_list
+                },
+                'small_avg': {
+                    'name': 'Hourly average',
+                    'data': get_averages(power_list, 5)
+                },
+                'large_avg': {
+                    'name': 'Three hour average',
+                    'data': get_averages(power_list, 13)
+                }
+            },
+            'success': True
+        }
+        cache.set('power_day', content, 5 * 60)
+        return JsonResponse(content)
+    return JsonResponse({'power': [], 'success': False})
 
 
 @login_required
@@ -59,7 +102,8 @@ def json_energy_year_view(request):
                     'data': get_averages(energy_list, 30)
                 }
             },
-            'success': True}
+            'success': True
+        }
         cache.set('energy_year', content, 5 * 60)
         return JsonResponse(content)
     return JsonResponse({'energy': [], 'success': False})
