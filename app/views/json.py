@@ -27,9 +27,9 @@ def json_icon(request):
 
 
 @login_required
-def json_energy_day_view(request):
+def json_energy_year_view(request):
     """ Returns a json object with all the energy data """
-    content = cache.get('energy_day')
+    content = cache.get('energy_year')
     if content is not None:
         return JsonResponse(content)
     start_date, end_date = get_start_and_end_date(SITE_ID, API_KEY)
@@ -60,6 +60,6 @@ def json_energy_day_view(request):
                 }
             },
             'success': True}
-        cache.set('energy_day', content, 5 * 60)
+        cache.set('energy_year', content, 5 * 60)
         return JsonResponse(content)
     return JsonResponse({'energy': [], 'success': False})
