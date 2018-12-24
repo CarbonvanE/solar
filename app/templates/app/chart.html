@@ -5,10 +5,10 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        $.getJSON('/json/energy', function(data) {
-            const rawData = data['energy']['raw'];
-            const smallAvg = data['energy']['small_avg'];
-            const largeAvg = data['energy']['large_avg'];
+        $.getJSON('{{ chart_url }}', function(data) {
+            const rawData = data['data']['raw'];
+            const smallAvg = data['data']['small_avg'];
+            const largeAvg = data['data']['large_avg'];
 
             const myChart = Highcharts.chart('chart-container', {
                 chart: {
@@ -30,11 +30,11 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Energy generated (kWh per day)'
+                        text: '{{ chart_y_axis_title }}'
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' kWh',
+                    valueSuffix: '{{ chart_tooltip_suffix }}',
                     shared: true
                 },
                 legend: {
@@ -46,23 +46,24 @@
                         marker: {
                             enabled: false
                         },
-                        // enableMouseTracking: false
                     }
                 },
                 series: [{
                     name: rawData['name'],
-                    type: 'column',
+                    {% if chart_raw_data_as_column %}
+                        type: 'column',
+                    {% endif %}
                     data: rawData['data'],
-                    color: 'lightgrey',
+                    color: '{{ color_raw_data }}',
                     lineWidth: 2,
                 }, {
                     name: smallAvg['name'],
                     data: smallAvg['data'],
-                    color: 'darkgrey'
+                    color: '{{ color_small_avg }}'
                 }, {
                     name: largeAvg['name'],
                     data: largeAvg['data'],
-                    color: 'grey'
+                    color: '{{ color_large_avg }}'
                 }
             ]
             });

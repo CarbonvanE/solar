@@ -48,7 +48,7 @@ def json_power_day(request):
             power = round(datum['value'], 1) if datum['value'] is not None else 0.0
             power_list.append([timestamp, power])
         content = {
-            'power': {
+            'data': {
                 'raw': {
                     'name': 'Power',
                     'data': power_list
@@ -88,7 +88,7 @@ def json_energy_year_view(request):
             energy = round(datum['value'] / 1000, 1) if datum['value'] is not None else 0.0
             energy_list.append([timestamp, energy])
         content = {
-            'energy': {
+            'data': {
                 'raw': {
                     'name': 'Daily generation',
                     'data': energy_list
