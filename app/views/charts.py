@@ -22,10 +22,10 @@ def chart_day_view(request):
 
 
 @login_required
-def chart_week_view(request):
-    """ Returns the chart of the last 7 days """
+def chart_month_view(request):
+    """ Returns the chart of the last 30 days """
     context = {
-        'tab': 'chart_week'
+        'tab': 'chart_month'
     }
     return render(request, 'app/chart.html', context)
 
