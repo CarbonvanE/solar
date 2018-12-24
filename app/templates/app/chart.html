@@ -6,9 +6,9 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         $.getJSON('{{ chart_url }}', function(data) {
-            const rawData = data['data']['raw'];
-            const smallAvg = data['data']['small_avg'];
-            const largeAvg = data['data']['large_avg'];
+            const rawData = data.data.raw;
+            const smallAvg = data.data.small_avg;
+            const largeAvg = data.data.large_avg;
 
             const myChart = Highcharts.chart('chart-container', {
                 chart: {
@@ -49,20 +49,20 @@
                     }
                 },
                 series: [{
-                    name: rawData['name'],
+                    name: rawData.name,
+                    data: rawData.data,
+                    color: '{{ color_raw_data }}',
+                    lineWidth: 2,
                     {% if chart_raw_data_as_column %}
                         type: 'column',
                     {% endif %}
-                    data: rawData['data'],
-                    color: '{{ color_raw_data }}',
-                    lineWidth: 2,
                 }, {
-                    name: smallAvg['name'],
-                    data: smallAvg['data'],
+                    name: smallAvg.name,
+                    data: smallAvg.data,
                     color: '{{ color_small_avg }}'
                 }, {
-                    name: largeAvg['name'],
-                    data: largeAvg['data'],
+                    name: largeAvg.name,
+                    data: largeAvg.data,
                     color: '{{ color_large_avg }}'
                 }
             ]
