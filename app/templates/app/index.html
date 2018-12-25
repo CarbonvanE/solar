@@ -30,8 +30,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            $.getJSON('/json/power', function(data) {
-                const rawData = data['power']['raw'];
+            $.getJSON('{{ chart_url }}', function(data) {
+                const rawData = data['data']['raw'];
 
                 const myChart = Highcharts.chart('container', {
                     chart: {

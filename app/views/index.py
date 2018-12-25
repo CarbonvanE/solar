@@ -23,6 +23,7 @@ def index_view(request):
     response = requests.get(url)
     data = json.loads(response.content)['overview']
     context = {
+        'chart_url': '/json/power?range=1',
         'last_updated': data['lastUpdateTime'],
         'energy_total': int(data['lifeTimeData']['energy'] / 1000),
         'energy_year': int(data['lastYearData']['energy'] / 1000),
@@ -30,5 +31,4 @@ def index_view(request):
         'energy_day': round(data['lastDayData']['energy'] / 1000, 1),
         'current_power': int(data['currentPower']['power'])
     }
-    print(data)
     return render(request, 'app/index.html', context)

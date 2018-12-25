@@ -10,7 +10,7 @@ def chart_day_view(request):
     context = {
         'tab': 'chart_day',
 
-        'chart_url': '/json/power',
+        'chart_url': '/json/power?range=1',
         'chart_y_axis_title': 'Power [W]',
         'chart_tooltip_suffix': ' W',
         'chart_raw_data_as_column': False,
@@ -27,10 +27,10 @@ def chart_month_view(request):
     context = {
         'tab': 'chart_month',
 
-        'chart_url': '/json/energy',
-        'chart_y_axis_title': 'Energy generated per day [kWh]',
-        'chart_tooltip_suffix': ' kWh',
-        'chart_raw_data_as_column': True,
+        'chart_url': '/json/power?range=30',
+        'chart_y_axis_title': 'Power [W]',
+        'chart_tooltip_suffix': ' W',
+        'chart_raw_data_as_column': False,
         'color_raw_data': 'lightgrey',
         'color_small_avg': 'darkgrey',
         'color_large_avg': 'grey'

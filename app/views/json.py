@@ -31,10 +31,11 @@ def json_icon(request):
 @login_required
 def json_power_day(request):
     """ returns a json object with the power data of the last 24 hours """
-    content = cache.get('power_day')
+    date_range = int(request.GET.get('range'))
+    content = cache.get(f'power_day_{date_range}')
     if content is not None:
         return JsonResponse(content)
-    start_time = (datetime.now(pytz.timezone(TIME_ZONE)) - timedelta(days=1)).strftime('%Y-%m-%d%%20%H:%M:%S')
+    start_time = (datetime.now(pytz.timezone(TIME_ZONE)) - timedelta(days=date_range)).strftime('%Y-%m-%d%%20%H:%M:%S')
     end_time = datetime.now(pytz.timezone(TIME_ZONE)).strftime('%Y-%m-%d%%20%H:%M:%S')
     time = f'startTime={start_time}&endTime={end_time}'
     url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/power?{time}&api_key={API_KEY}'
@@ -64,7 +65,7 @@ def json_power_day(request):
             },
             'success': True
         }
-        cache.set('power_day', content, 5 * 60)
+        cache.set(f'power_day_{date_range}', content, 5 * 60)
         return JsonResponse(content)
     return JsonResponse({'power': [], 'success': False})
 
