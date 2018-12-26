@@ -1,10 +1,11 @@
 """ Handles all AJAX requests """
 
 from datetime import datetime, timedelta
-import pytz
 import json
+import pytz
 import requests
 
+from decouple import config
 from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -12,19 +13,9 @@ from django.http import JsonResponse
 from functions import get_start_and_end_date, what_is_the_weather, get_averages
 
 
-# Get the API key and site id
-with open('solar/secrets.json', 'r') as f:
-    DATA = json.load(f)
-    API_KEY = DATA['SOLAREDGE']['API_KEY']
-    SITE_ID = DATA['SOLAREDGE']['SITE_ID']
-    TIME_ZONE = DATA['LOCATION']['TIME_ZONE']
-    LAT = DATA['LOCATION']['LAT']
-    LNG = DATA['LOCATION']['LNG']
-
-
 def json_icon(request):
     """ Returns the relevant weather icon """
-    icon = what_is_the_weather(SITE_ID, API_KEY, LAT, LNG)
+    icon = what_is_the_weather(config("SITE_ID"), config("API_KEY"), config("LAT"), config("LNG"))
     return JsonResponse({'icon': icon})
 
 
@@ -35,10 +26,10 @@ def json_power_day(request):
     content = cache.get(f'power_day_{date_range}')
     if content is not None:
         return JsonResponse(content)
-    start_time = (datetime.now(pytz.timezone(TIME_ZONE)) - timedelta(days=date_range)).strftime('%Y-%m-%d%%20%H:%M:%S')
-    end_time = datetime.now(pytz.timezone(TIME_ZONE)).strftime('%Y-%m-%d%%20%H:%M:%S')
+    start_time = (datetime.now(pytz.timezone(config("TIME_ZONE"))) - timedelta(days=date_range)).strftime('%Y-%m-%d%%20%H:%M:%S')
+    end_time = datetime.now(pytz.timezone(config("TIME_ZONE"))).strftime('%Y-%m-%d%%20%H:%M:%S')
     time = f'startTime={start_time}&endTime={end_time}'
-    url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/power?{time}&api_key={API_KEY}'
+    url = f'https://monitoringapi.solaredge.com/site/{config("SITE_ID")}/power?{time}&api_key={config("API_KEY")}'
     response = requests.get(url)
     if response.status_code == 200:
         data = json.loads(response.content)['power']['values']
@@ -76,9 +67,9 @@ def json_energy_year_view(request):
     content = cache.get('energy_year')
     if content is not None:
         return JsonResponse(content)
-    start_date, end_date = get_start_and_end_date(SITE_ID, API_KEY)
+    start_date, end_date = get_start_and_end_date(config("SITE_ID"), config("API_KEY"))
     time = f'startDate={start_date}&endDate={end_date}'
-    url = f'https://monitoringapi.solaredge.com/site/{SITE_ID}/energy?timeUnit=DAY&{time}&api_key={API_KEY}'
+    url = f'https://monitoringapi.solaredge.com/site/{config("SITE_ID")}/energy?timeUnit=DAY&{time}&api_key={config("API_KEY")}'
     response = requests.get(url)
     if response.status_code == 200:
         data = json.loads(response.content)['energy']['values']
