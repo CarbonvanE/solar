@@ -6,4 +6,6 @@ This website uses Bootstrap and FontAwesome as CSS framework and icon repository
 
 All HTML pages can be found in 'templates' under 'app', all CSS styles and JavaScript files can be found in 'static' under 'app'.
 
-As an additional touch I added a settings page. On this settings page users can change their username, e-mail address, first name, last name, and/or password. 
+As an additional touch I added a settings page. On this settings page users can change their username, e-mail address, first name, last name, and/or password.
+
+![Finally done!][https://media.giphy.com/media/3oEdv9duTLhWoNhcGs/giphy.gif]
