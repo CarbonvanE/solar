@@ -8,4 +8,4 @@ All HTML pages can be found in 'templates' under 'app', all CSS styles and JavaS
 
 As an additional touch I added a settings page. On this settings page users can change their username, e-mail address, first name, last name, and/or password.
 
-![Finally done!][https://media.giphy.com/media/3oEdv9duTLhWoNhcGs/giphy.gif]
+![Finally done!](https://media.giphy.com/media/3oEdv9duTLhWoNhcGs/giphy.gif)
